@@ -1,0 +1,134 @@
+html{
+    overflow: auto;
+    background: linear-gradient(to right, #00d9ff, #13118a);
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label{
+    
+    font-size: 28pt;
+}
+.form_dados_pessoais{
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+input{
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.inputs_texto{
+    min-width: 450px;
+    min-height: 30px;
+    font-size: 18pt;
+}
+
+.form_dados_pessoais fieldset{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: snow;
+    border: none;
+    box-shadow: 10px 10px 2px rgba(0, 0, 0, 0.5); /* Sombra */
+}
+
+
+.form_dados_pessoais div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+
+}
+
+#busca_cep{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#cpf{
+    margin-right: 5px;
+}
+
+#pesquisar_cep{
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 20px;
+    transition: all linear(160ms);
+}
+
+#pesquisar_cep:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+#btn-op{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+#excluir{
+    color: white;
+    background-color: rgb(192, 192, 192);
+    border-radius: 5px;
+    font-size: 24pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all linear 160ms;
+    border: none;
+}
+
+.estilo_submissao:hover{
+    cursor: pointer;
+    background-color: rgb(0, 83, 0) !important;
+    transform: scale(1.05);
+    border: 1px solid black;
+}
+
+#voltar{
+    background-color: rgb(100, 100, 100);
+    font-size: 24pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+    width: fit-content;
+    transition: all linear 160ms;
+}
+
+#voltar:hover{
+    transform: scale(1.05);
+    background-color: rgb(117, 0, 0);
+    border: 1px solid black;
+}
+
+#mensagem_erro{
+    font-size: 14pt;
+}
