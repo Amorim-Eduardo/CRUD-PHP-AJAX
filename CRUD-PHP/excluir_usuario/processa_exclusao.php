@@ -1,17 +1,15 @@
 <?php
 
+include '../classes/database.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($_POST['cpf'])) {
 
         $cpf = $_POST['cpf'];
 
-        $host = 'localhost';
-        $usuario = 'root'; 
-        $senha = ''; 
-        $banco = 'crud_ajax';
-
-        $conn = new mysqli($host, $usuario, $senha, $banco);
+        $database = new Database();
+        $conn = $database->getConnection();
 
         // Verifica a conexão
         if ($conn->connect_error) {

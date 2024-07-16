@@ -2,6 +2,7 @@
 session_start();
 
 include '../classes/pessoa.php';
+include '../classes/database.php';
 
 // Verifica se o método de requisição é POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -55,12 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode($response);
         exit;
     } else {
-        $host = 'localhost';
-        $usuario = 'root'; 
-        $senha = ''; 
-        $banco = 'crud_ajax';
+       
+        $database = new Database();
 
-        $conn = new mysqli($host, $usuario, $senha, $banco);
+        $conn = $database->getConnection();
 
         // Verifica a conexão
         if ($conn->connect_error) {
