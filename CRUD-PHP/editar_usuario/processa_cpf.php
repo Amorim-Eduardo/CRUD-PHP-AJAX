@@ -1,5 +1,7 @@
 <?php
 
+include '../classes/pessoa.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['cpf']) && $_POST['cpf'] != '') {
@@ -7,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cpf = $_POST['cpf'];
 
         $host = 'localhost';
-        $usuario = 'root'; 
-        $senha = ''; 
+        $usuario = 'root';
+        $senha = '';
         $banco = 'crud_ajax';
 
         $conn = new mysqli($host, $usuario, $senha, $banco);
@@ -19,52 +21,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt = $conn->prepare("SELECT * FROM dados_pessoais WHERE cpf = ?");
+        
+        // Verifica se a preparação da consulta ocorreu sem erros
+        if ($stmt === false) {
+            $response = [
+                'success' => false,
+                'message' => 'Erro na preparação da consulta: ' . $conn->error
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit;
+        }
+
         $stmt->bind_param("s", $cpf);
 
         if (!$stmt->execute()) {
             $response = [
                 'success' => false,
-                'message' => 'Erro ao inserir no banco!'
+                'message' => 'Erro ao buscar dados no banco: ' . $stmt->error
             ];
             header('Content-Type: application/json');
             echo json_encode($response);
 
-        }else {
+        } else {
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
 
-            if($result->num_rows == 0){
+            // Verifica se encontrou algum registro
+            if (!$row) {
                 $response = [
                     'success' => false,
-                    'message' => 'usuário não encontrado!!!'
+                    'message' => 'Usuário não encontrado!'
                 ];
-                header('Content-Type: application/json');
-                echo json_encode($response);
-
-            }else{
+            } else {
+                $pessoa = new Pessoa($row['nome'], $row['cpf'], $row['email'], $row['data_nascimento']);
                 $response = [
                     'success' => true,
                     'message' => 'Usuário encontrado',
-                    'nome' => $row['nome'],
-                    'cpf' => $row['cpf'],
-                    'email' => $row['email'],
-                    'data_nascimento' => $row['data_nascimento']
+                    'nome' => $pessoa->getNome(),
+                    'cpf' => $pessoa->getCpf(),
+                    'email' => $pessoa->getEmail(),
+                    'data_nascimento' => $pessoa->getDataNascimento()
                 ];
-
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
-            
+
+            header('Content-Type: application/json');
+            echo json_encode($response);
         }
     } else {
-    // método de requisição inválido
+        // CPF não foi fornecido na requisição
+        $response = [
+            'success' => false,
+            'message' => 'CPF não informado!'
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+} else {
+    // Método de requisição inválido
     $response = [
         'success' => false,
-        'message' => 'Usuário não encontrado'
+        'message' => 'Método de requisição inválido!'
     ];
 
     header('Content-Type: application/json');
     echo json_encode($response);
-    }
 }
 ?>

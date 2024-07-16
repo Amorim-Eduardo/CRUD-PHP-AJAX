@@ -32,27 +32,27 @@ $(document).ready(function() {
                 document.getElementById('data_nascimento').style.border = '2px solid green';
             }
     
-        }else{
+        } else {
             var ajax = new XMLHttpRequest();
             ajax.overrideMimeType('application/json');
         
             ajax.onreadystatechange = function() {
                 if (ajax.readyState === 4) { // Quando a requisição estiver concluída
-                if (ajax.status === 200) { // Se a resposta for OK
-                    try {
-                        var response = JSON.parse(ajax.responseText); // Converte a resposta para JSON
-                        alert(response.message);
+                    if (ajax.status === 200) { // Se a resposta for OK
+                        try {
+                            var response = JSON.parse(ajax.responseText); // Converte a resposta para JSON
+                            alert(response.message);
 
-                        if(response.success){
-                            document.getElementById('form_cadastro').reset();
-                        }
+                            if(response.success){
+                                document.getElementById('form_cadastro').reset();
+                            }
         
-                    } catch (e) {
-                    alert('Erro ao processar a resposta do servidor');
+                        } catch (e) {
+                            alert('Erro ao processar a resposta do servidor. Status: ' + ajax.status);
+                        }
+                    } else {
+                        alert('Erro ao buscar o endereço. Status: ' + ajax.status);
                     }
-                } else {
-                    alert('Erro ao buscar o endereço. Status' + ajax.status);
-                }
                 }
             };
         
@@ -61,7 +61,4 @@ $(document).ready(function() {
             ajax.send('nome=' + encodeURIComponent(nome) + '&cpf=' + encodeURIComponent(cpf) + '&email=' + encodeURIComponent(email) + '&data_nascimento=' + encodeURIComponent(data_nascimento));
         }
     });
-  });
-
-   
-        
+});
