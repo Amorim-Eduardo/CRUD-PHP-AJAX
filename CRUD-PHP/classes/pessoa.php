@@ -1,31 +1,11 @@
 <?php
-class Pessoa {
-    private $nome;
-    private $cpf;
-    private $email;
-    private $data_nascimento;
+include_once 'dados_pessoais.php';
 
-    public function __construct($nome, $cpf, $email, $data_nascimento) {
-        $this->nome = $nome;
-        $this->cpf = $cpf;
-        $this->email = $email;
-        $this->data_nascimento = $data_nascimento;
+class Pessoa extends DadosPessoais{
+  
+    public function mostrarInformacoes() {
+        echo "Nome: {$this->nome}, CPF: {$this->cpf}, Email: {$this->email}, Data de Nascimento: {$this->dataNascimento}";
     }
 
-    public function getNome() {
-        return $this->nome;
-    }
-
-    public function getCpf() {
-        return $this->cpf;
-    }
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    public function getDataNascimento() {
-        return $this->data_nascimento;
-    }
 }
 ?>
