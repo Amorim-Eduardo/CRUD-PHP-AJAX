@@ -2,13 +2,11 @@
 
 class DadosPessoais {
     protected $nome;
-    protected $cpf;
     protected $email;
     protected $dataNascimento;
 
-    public function __construct($nome, $cpf, $email, $dataNascimento) {
+    public function __construct($nome, $email, $dataNascimento) {
         $this->nome = $nome;
-        $this->cpf = $cpf;
         $this->email = $email;
         $this->dataNascimento = $dataNascimento;
     }
@@ -19,14 +17,6 @@ class DadosPessoais {
 
     public function setNome($nome) {
         $this->nome = $nome;
-    }
-
-    public function getCpf() {
-        return $this->cpf;
-    }
-
-    public function setCpf($cpf) {
-        $this->cpf = $cpf;
     }
 
     public function getEmail() {

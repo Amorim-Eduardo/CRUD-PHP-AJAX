@@ -12,9 +12,9 @@ session_start();
     <title>Cadastro</title>
     <meta http-equiv="Cache-Control" content="no-store" />
 
-    <link rel="stylesheet" href="cadastro_style.css">
+    <link rel="stylesheet" href="../css/cadastro_style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="inserir_dados.js"></script>
+    <script src="../js/inserir_dados.js"></script>
 
     <style>
         /* Estilos para borda vermelha */
@@ -46,8 +46,8 @@ session_start();
             </div>
 
             <div>
-                <label for="cpf">CPF</label>
-                <input type="text" class="inputs_texto" id="cpf" name="cpf"  value="<?php echo isset($_SESSION['valid_values']['cpf']) ? $_SESSION['valid_values']['cpf'] : ''; ?>">
+                <label for="cpf">CNPJ:</label>
+                <input type="text" class="inputs_texto" id="cnpj" name="cnpj"  value="<?php echo isset($_SESSION['valid_values']['cnpj']) ? $_SESSION['valid_values']['cnpj'] : ''; ?>">
             </div>
 
             <div>
@@ -62,7 +62,7 @@ session_start();
 
             <div id="btn-op">
                 <button type="submit" id="cadastrar">Cadastrar</button>
-                <a href="../index/index.php"><div id="voltar">Voltar</div></a>
+                <a href="../../index/index.php"><div id="voltar">Voltar</div></a>
             </div>
 
         </fieldset>
