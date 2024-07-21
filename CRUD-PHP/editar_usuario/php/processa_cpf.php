@@ -1,7 +1,7 @@
 <?php
 
-include '../classes/pessoa.php';
-include '../classes/database.php';
+include '../../classes/pessoa_fisica.php';
+include '../../classes/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Falha na conexão: " . $conn->connect_error);
         }
 
-        $stmt = $conn->prepare("SELECT * FROM dados_pessoais WHERE cpf = ?");
+        $stmt = $conn->prepare("SELECT * FROM pessoa_fisica WHERE cpf = ?");
         
         // Verifica se a preparação da consulta ocorreu sem erros
         if ($stmt === false) {
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'message' => 'Usuário não encontrado!'
                 ];
             } else {
-                $pessoa = new Pessoa($row['nome'], $row['cpf'], $row['email'], $row['data_nascimento']);
+                $pessoa = new PessoaFisica($row['nome'], $row['email'], $row['data_nascimento'],$row['cpf']);
                 $response = [
                     'success' => true,
                     'message' => 'Usuário encontrado',

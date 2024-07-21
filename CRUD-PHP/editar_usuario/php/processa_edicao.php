@@ -1,38 +1,53 @@
 <?php
 session_start();
 
-include '../classes/pessoa.php';
-include '../classes/database.php';
+include_once '../../classes/database.php';
+include_once '../../classes/pessoa_fisica.php';
+include_once '../../classes/pessoa_juridica.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
 
     // Verifica se todos os campos necessários foram recebidos
-    if (!empty($_POST['nome']) && !empty($_POST['cpf']) && !empty($_POST['cpf_antigo']) && !empty($_POST['email']) && !empty($_POST['data_nascimento'])) {
+    if (!empty($_POST['nome']) && !empty($_POST['email']) && !empty($_POST['data_nascimento'])) {
 
         $nome = $_POST['nome'];
-        $cpf_novo = $_POST['cpf'];
-        $cpf_antigo = $_POST['cpf_antigo'];
         $email = $_POST['email'];
         $data_nascimento = $_POST['data_nascimento'];
+        $cpf_novo = isset($_POST['cpf']) ? $_POST['cpf'] : null;
+        $cpf_antigo = isset($_POST['cpf_antigo']) ? $_POST['cpf_antigo'] : null;
+        $cnpj_novo = isset($_POST['cnpj']) ? $_POST['cnpj'] : null;
+        $cnpj_antigo = isset($_POST['cnpj_antigo']) ? $_POST['cnpj_antigo'] : null;
 
-        $pessoa = new Pessoa($nome, $cpf_novo, $email, $data_nascimento);
+        // Determine se é uma pessoa física ou jurídica
+        $isPessoaFisica = !empty($cpf_novo);
+
+        if ($isPessoaFisica) {
+            $pessoa = new PessoaFisica($nome, $email, $data_nascimento, $cpf_novo);
+            $identificador_novo = $cpf_novo;
+            $identificador_antigo = $cpf_antigo;
+            $tabela = "pessoa_fisica";
+            $coluna_identificador = "cpf";
+        } else {
+            $pessoa = new PessoaJuridica($nome, $email, $data_nascimento, $cnpj_novo);
+            $identificador_novo = $cnpj_novo;
+            $identificador_antigo = $cnpj_antigo;
+            $tabela = "pessoa_juridica";
+            $coluna_identificador = "cnpj";
+        }
 
         // Validação dos campos usando métodos da classe Pessoa
         if (empty($pessoa->getNome())) {
             $errors['nome'] = "O campo Nome é obrigatório.";
         }
 
-        if (empty($pessoa->getCpf())) {
-            $errors['cpf'] = "O campo CPF é obrigatório.";
+        if (empty($identificador_novo)) {
+            $errors['identificador'] = "O campo CPF/CNPJ é obrigatório.";
         }
 
         if (empty($pessoa->getEmail())) {
             $errors['email'] = "O campo E-mail é obrigatório.";
-        } elseif (!filter_var($pessoa->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "E-mail inválido.";
-        }
-
+        } 
         if (empty($pessoa->getDataNascimento())) {
             $errors['data_nascimento'] = "O campo Data de Nascimento é obrigatório.";
         }
@@ -40,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Se houver erros, retorna uma resposta com os erros
         if (!empty($errors)) {
             $_SESSION['nome'] = $pessoa->getNome();
-            $_SESSION['cpf'] = $pessoa->getCpf();
+            $_SESSION['identificador'] = $identificador_novo;
             $_SESSION['email'] = $pessoa->getEmail();
             $_SESSION['data_nascimento'] = $pessoa->getDataNascimento();
 
@@ -51,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response = [
                 'success' => false,
                 'errors' => $errors,
-                'message' => 'Dados incompletos!!!'
+                'message' => 'Dados incompletos ou inválidos!'
             ];
 
             header('Content-Type: application/json');
@@ -59,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
             // Todos os dados estão válidos, proceder com a atualização no banco de dados
-            
             $database = new Database();
             $conn = $database->getConnection();
 
@@ -69,8 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Preparação da query SQL para UPDATE
-            $stmt = $conn->prepare("UPDATE dados_pessoais SET nome = ?, cpf = ?, email = ?, data_nascimento = ? WHERE cpf = ?");
-            $stmt->bind_param("sssss", $nome, $cpf_novo, $email, $data_nascimento, $cpf_antigo);
+            $query = "UPDATE $tabela SET nome = ?, $coluna_identificador = ?, email = ?, data_nascimento = ? WHERE $coluna_identificador = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("sssss", $nome, $identificador_novo, $email, $data_nascimento, $identificador_antigo);
 
             // Executa a query
             if (!$stmt->execute()) {
@@ -81,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $response = [
                     'success' => true,
-                    'message' => 'Dados alterados com sucesso!!!'
+                    'message' => 'Dados alterados com sucesso!'
                 ];
             }
 
@@ -96,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Dados não recebidos corretamente via POST
         $response = [
             'success' => false,
-            'message' => 'Dados incompletos!!!'
+            'message' => 'Dados incompletos!'
         ];
 
         header('Content-Type: application/json');

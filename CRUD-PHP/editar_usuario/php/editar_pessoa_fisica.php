@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar dados</title>
     <meta http-equiv="Cache-Control" content="no-store" />
-    <link rel="stylesheet" href="excluir_style.css">
+    <link rel="stylesheet" href="../css/editar_style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="excluir_dados.js"></script>
+    <script src="../js/editar_dados.js"></script>
 </head>
 
 
@@ -43,8 +43,8 @@
             </div>
 
             <div id="btn-op">
-                <button type="submit" id="excluir" class="estilo_submissao">Excluir</button>
-                <a href="../index/index.php"><div id="voltar">Voltar</div></a>
+                <button type="submit" id="atualizar" class="estilo_submissao">Atualizar</button>
+                <a href="../../index/index.php"><div id="voltar">Voltar</div></a>
             </div>
 
         </fieldset>

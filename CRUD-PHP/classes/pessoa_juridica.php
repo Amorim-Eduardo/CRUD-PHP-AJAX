@@ -1,5 +1,6 @@
 <?php 
 
+include_once 'dados_pessoais.php';
 class PessoaJuridica extends DadosPessoais {
     private $cnpj;
 

@@ -2,12 +2,9 @@
 
 session_start();
 
-// Ativa a exibição de erros para depuração
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include_once '../';
+include_once '../../classes/pessoa_fisica.php';
+include_once '../../classes/pessoa_juridica.php';
+include_once '../../classes/database.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errors = [];

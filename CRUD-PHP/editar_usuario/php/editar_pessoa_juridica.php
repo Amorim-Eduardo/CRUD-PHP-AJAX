@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar dados</title>
     <meta http-equiv="Cache-Control" content="no-store" />
-    <link rel="stylesheet" href="editar_style.css">
+    <link rel="stylesheet" href="../css/editar_style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="editar_dados.js"></script>
+    <script src="../js/editar_dados.js"></script>
 </head>
 
 
@@ -25,10 +25,10 @@
             </div>
 
             <div>
-                <label for="cpf">CPF</label>
+                <label for="cpf">CNPJ</label>
                 <div id="busca_cep">
-                    <input style="margin-left: 40px;" type="text" class="inputs_texto" id="cpf" name="cpf"  value="<?php echo isset($_SESSION['valid_values']['cpf']) ? $_SESSION['valid_values']['cpf'] : ''; ?>">
-                    <button id="pesquisar_cpf">🔍</button>
+                    <input style="margin-left: 40px;" type="text" class="inputs_texto" id="cnpj" name="cnpj"  value="<?php echo isset($_SESSION['valid_values']['cnpj']) ? $_SESSION['valid_values']['cnpj'] : ''; ?>">
+                    <button id="pesquisar_cnpj">🔍</button>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
 
             <div id="btn-op">
                 <button type="submit" id="atualizar" class="estilo_submissao">Atualizar</button>
-                <a href="../index/index.php"><div id="voltar">Voltar</div></a>
+                <a href="../../index/index.php"><div id="voltar">Voltar</div></a>
             </div>
 
         </fieldset>
